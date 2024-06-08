@@ -1,18 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { CarProvider } from './components/CarContext';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CarSearchForm from './components/CarSearchForm';
+import CarList from './components/CarList';
+import RentalForm from './components/RentalForm';
+import RentedCarInfo from './components/RentedCarInfo';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        :d
-      </div>
-    </>
-  )
-}
+    <CarProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <CarSearchForm />
+          </Route>
+          <Route path="/available">
+            <CarList />
+          </Route>
+          <Route path="/rented">
+            <RentalForm />
+          </Route>
+          <Route path="/rentedCarInfo">
+            <RentedCarInfo />
+          </Route>
+        </Switch>
+      </Router>
+    </CarProvider>
+  );
+};
 
-export default App
+export default App;
