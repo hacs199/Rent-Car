@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 
 const Home = () => {
     const [location, setLocation] = useState("");
@@ -17,6 +18,13 @@ const Home = () => {
     const [showForm, setShowForm] = useState(false);
     const [carRented, setCarRented] = useState(null);
     const [rentedDates, setRentedDates] = useState({});
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [city, setCity] = useState("");
+    const [phone, setPhone] = useState("");
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const handleSearch = () => {
         let results = [];
@@ -34,7 +42,7 @@ const Home = () => {
             ];
         } else if (location === "Riohacha") {
             results = [
-                { id: 7, name: "Carro 7", description: "$10.000.000 C/D", image: "public/Mercedes_Benz_G_Class_2023.jpg", price: 10000000},
+                { id: 7, name: "Carro 7", description: "$10.000.000 C/D", image: "public/Mercedes_Benz_G_Class_2023.jpg", price: 10000000 },
                 { id: 8, name: "Carro 8", description: "$100.000 C/D", image: "public/txl.jpg", price: 100000 },
                 { id: 9, name: "Carro 9", description: "$120.000 C/D", image: "public/4runner-2025.jpg", price: 120000 }
             ];
@@ -52,8 +60,7 @@ const Home = () => {
         e.preventDefault();
         setRentedDates({ startDate, endDate });
         setShowForm(false);
-        // Asignar el carro rentado al estado carRented
-        setCarRented(searchResults.find(car => car.name === carRented.name));
+        setShowConfirmation(true);
     }
 
     return (
@@ -61,7 +68,7 @@ const Home = () => {
             <div style={{ marginBottom: "40px" }}>
                 <Stack direction="horizontal" gap={3}>
                     <div>Localización</div>
-                    <Form.Select 
+                    <Form.Select
                         aria-label="Default select example"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
@@ -72,14 +79,14 @@ const Home = () => {
                         <option value="Riohacha">Riohacha</option>
                     </Form.Select>
                     <div>Fecha Inicio</div>
-                    <Form.Control 
-                        type="date" 
+                    <Form.Control
+                        type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                     <div>Fecha Fin</div>
-                    <Form.Control 
-                        type="date" 
+                    <Form.Control
+                        type="date"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     />
@@ -101,14 +108,14 @@ const Home = () => {
                                 <Card.Text>
                                     {car.description}
                                 </Card.Text>
-                                <Button variant="primary" onClick={handleRent}>Rentar</Button>
+                                <Button variant="primary" onClick={() => handleRent(car)}>Rentar</Button>
                             </Card.Body>
                         </Card>
                     ))}
                 </Stack>
             </Collapse>
             {showForm && (
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <Row className="mb-3">
                         <Form.Group as={Col} md="4" controlId="validationCustom01">
                             <Form.Label>Nombres</Form.Label>
@@ -116,6 +123,8 @@ const Home = () => {
                                 required
                                 type="text"
                                 placeholder="Nombres"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -125,6 +134,8 @@ const Home = () => {
                                 required
                                 type="text"
                                 placeholder="Apellidos"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -133,9 +144,11 @@ const Home = () => {
                             <InputGroup hasValidation>
                                 <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
                                 <Form.Control
-                                    type="text"
+                                    type="email"
                                     placeholder="Email"
                                     aria-describedby="inputGroupPrepend"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -147,21 +160,39 @@ const Home = () => {
                     <Row className="mb-3">
                         <Form.Group as={Col} md="6" controlId="validationCustom03">
                             <Form.Label>Dirección</Form.Label>
-                            <Form.Control type="text" placeholder="Dirección" required />
+                            <Form.Control
+                                type="text"
+                                placeholder="Dirección"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                required
+                            />
                             <Form.Control.Feedback type="invalid">
                                 Proporcione su Dirección.
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} md="3" controlId="validationCustom04">
                             <Form.Label>Ciudad</Form.Label>
-                            <Form.Control type="text" placeholder="Ciudad" required />
+                            <Form.Control
+                                type="text"
+                                placeholder="Ciudad"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                required
+                            />
                             <Form.Control.Feedback type="invalid">
-                            Proporcione su ciudad.
+                                Proporcione su ciudad.
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group as={Col} md="3" controlId="validationCustom05">
                             <Form.Label>Celular</Form.Label>
-                            <Form.Control type="text" placeholder="Celular" required />
+                            <Form.Control
+                                type="text"
+                                placeholder="Celular"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                required
+                            />
                             <Form.Control.Feedback type="invalid">
                                 Coloque un numero valido.
                             </Form.Control.Feedback>
@@ -179,22 +210,24 @@ const Home = () => {
                 </Form>
             )}
             {carRented && (
-                <div>
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src={carRented.image} style={{ height: 'rem', objectFit: 'cover' }} />
+                <Container className="d-flex justify-content-center">
+                    <Card style={{ width: '18rem', marginTop: '20px' }}>
+                        <Card.Img variant="top" src={carRented.image} />
                         <Card.Body>
                             <Card.Title>{carRented.name}</Card.Title>
                             <Card.Text>
-                                <p>Rentado</p>
-                                <p>Fecha de inicio: {rentedDates.startDate}</p>
-                                <p>Fecha de fin: {rentedDates.endDate}</p>
+                                Rentado por: {firstName} {lastName}
+                            </Card.Text>
+                            <Card.Text>
+                                Fechas de renta: {rentedDates.startDate} - {rentedDates.endDate}
                             </Card.Text>
                         </Card.Body>
                     </Card>
-                </div>
+                </Container>
             )}
         </>
     );
 }
 
-export default Home
+export default Home;
+
