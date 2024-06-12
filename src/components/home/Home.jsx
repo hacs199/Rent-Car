@@ -52,6 +52,8 @@ const Home = () => {
         e.preventDefault();
         setRentedDates({ startDate, endDate });
         setShowForm(false);
+        // Asignar el carro rentado al estado carRented
+        setCarRented(searchResults.find(car => car.name === carRented.name));
     }
 
     return (
